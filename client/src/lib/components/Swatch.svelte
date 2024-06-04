@@ -3,6 +3,7 @@
   import { fly, fade } from "svelte/transition";
 
   export let color: string;
+  export let label: string | null | undefined;
   export let duration = 0;
   export let translateY = 0;
   export let translateX = 0;
@@ -20,7 +21,7 @@
 </script>
 
 <div
-  class="duration-250 group relative flex aspect-square h-full w-full flex-col items-center justify-between border-muted-foreground transition-all hover:border hover:bg-background hover:p-2 hover:shadow"
+  class="duration-50 group relative flex aspect-square h-full w-full flex-col items-center justify-between border-muted-foreground transition-all hover:border hover:bg-background hover:p-2 hover:shadow"
   in:fly={{
     x: translateX,
     y: translateY,
@@ -33,15 +34,19 @@
     style="background-color: {color};"
   />
   <span
-    class="duration-250 my-1 w-full text-left font-mono text-xs font-bold text-primary opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
+    class="duration-50 my-1 w-full text-left font-mono text-xs font-bold text-primary opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
     in:fade
   >
     {hexToRgb(color)}
   </span>
   <span
-    class="duration-250 w-full text-left font-mono text-lg font-light text-primary opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
+    class="duration-50 w-full text-left font-mono text-lg font-light text-primary opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
     in:fade
   >
-    {color.toUpperCase()}
+    {#if label}
+      {label}
+    {:else}
+      {color.toUpperCase()}
+    {/if}
   </span>
 </div>
