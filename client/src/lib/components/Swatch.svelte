@@ -21,7 +21,7 @@
 </script>
 
 <div
-  class="duration-50 group relative flex aspect-square h-full w-full flex-col items-center justify-between border-muted-foreground transition-all hover:border hover:bg-background hover:p-2 hover:shadow"
+  class="duration-50 group relative flex aspect-square h-full w-full flex-col items-center justify-between border-muted-foreground transition-all hover:shadow md:hover:border md:hover:bg-background md:hover:p-2"
   in:fly={{
     x: translateX,
     y: translateY,
@@ -30,17 +30,17 @@
   }}
 >
   <div
-    class="duration-400 aspect-square w-full rounded-xl border-black transition-all ease-in-out group-hover:h-3/4 group-hover:rounded-none md:rounded-2xl"
+    class="duration-400 aspect-square w-full rounded-xl border-black transition-all ease-in-out md:rounded-2xl md:group-hover:h-3/4 md:group-hover:rounded-none"
     style="background-color: {color};"
   />
   <span
-    class="duration-50 my-1 w-full text-left font-mono text-xs font-bold text-primary opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
+    class="duration-50 my-1 hidden w-full text-left font-mono text-xs font-bold text-primary opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100 md:flex"
     in:fade
   >
     {hexToRgb(color)}
   </span>
   <span
-    class="duration-50 w-full text-left font-mono text-lg font-light text-primary opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
+    class="duration-50 hidden w-full text-left font-mono text-lg font-light text-primary opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100 md:flex"
     in:fade
   >
     {#if label}
