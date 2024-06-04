@@ -31,10 +31,17 @@ def get_skin_tone_from_image():
             result = stone.process(
                 temp_file.name, image_type="color", return_report_image=True
             )
-            skin_tone = result["faces"][0].get("skin_tone").lower()
+            skin_tone = "#" + result["faces"][0].get("skin_tone").lower()
             facial_area = [int(area) for area in facial_area]
+            padded_facial_area = []
 
-            return jsonify({"skin_tone": skin_tone, "facial_area": facial_area})
+            return jsonify(
+                {
+                    "skin_tone": skin_tone,
+                    "facial_area": facial_area,
+                    "padded_facial_area": padded_facial_area,
+                }
+            )
 
     except NoFacesError:
         return jsonify(

@@ -27,8 +27,11 @@ export const load: PageLoad = async ({ params, fetch }) => {
     if (!response.ok) {
       throw error(response.status, "Failed to fetch palette");
     }
+    const analysis = await response.json();
+    analysis.skinTone = analysis.skin_tone;
 
-    const data: PageData = { analysis: await response.json() };
+    const data: PageData = { analysis };
+
     return data;
   } catch (err) {
     console.error(err);
