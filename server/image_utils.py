@@ -29,7 +29,7 @@ def get_analysis_by_skin_tone(skin_tone):
     colors = get_colors_by_skin_tone(skin_tone)
     # TODO:Add not recommended colors
 
-    return {"skin_tone": skin_tone, "season": season.value, "colors": colors}
+    return {"skinTone": "#" + skin_tone, "season": season.value, "colors": colors}
 
 
 def get_face(img_path):
