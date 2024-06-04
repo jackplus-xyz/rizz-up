@@ -1,51 +1,47 @@
 <script lang="ts">
-	import { cubicOut } from 'svelte/easing';
-	import { fly, fade } from 'svelte/transition';
+  import { cubicOut } from "svelte/easing";
+  import { fly, fade } from "svelte/transition";
 
-	export let color: string;
-	export let duration = 0;
-	export let translateY = 0;
-	export let translateX = 0;
-	export let label = color.toUpperCase();
+  export let color: string;
+  export let duration = 0;
+  export let translateY = 0;
+  export let translateX = 0;
 
-	$: textColor = getLuminance(color) > 0.5 ? 'black' : 'white';
-
-	function getLuminance(hexColor: string): number {
-		const rgb = hexToRgb(hexColor);
-		if (!rgb) return 0;
-
-		const [r, g, b] = rgb.map((c) => {
-			c /= 255;
-			return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-		});
-
-		return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-	}
-
-	function hexToRgb(hex: string): number[] | null {
-		const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-		return result
-			? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)]
-			: null;
-	}
+  function hexToRgb(hex: string): number[] | null {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+      ? [
+          parseInt(result[1], 16),
+          parseInt(result[2], 16),
+          parseInt(result[3], 16),
+        ]
+      : null;
+  }
 </script>
 
 <div
-	class="group relative aspect-square w-full rounded-xl transition-all duration-500 ease-in-out
-	hover:scale-105 md:rounded-3xl"
-	style="background-color: {color};"
-	in:fly={{
-		x: translateX,
-		y: translateY,
-		duration: duration,
-		easing: cubicOut
-	}}
+  class="duration-250 group relative flex aspect-square h-full w-full flex-col items-center justify-between border-muted-foreground transition-all hover:border hover:bg-background hover:p-2 hover:shadow"
+  in:fly={{
+    x: translateX,
+    y: translateY,
+    duration: duration,
+    easing: cubicOut,
+  }}
 >
-	<span
-		class="duration-250 absolute inset-0 hidden items-center justify-center text-base opacity-0 transition-opacity ease-in-out group-hover:opacity-100 md:flex"
-		style="color: {textColor};"
-		in:fade
-	>
-		{label}
-	</span>
+  <div
+    class="duration-400 aspect-square w-full rounded-xl border-black transition-all ease-in-out group-hover:h-3/4 group-hover:rounded-none md:rounded-2xl"
+    style="background-color: {color};"
+  />
+  <span
+    class="duration-250 my-1 w-full text-left font-mono text-xs font-bold text-primary opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
+    in:fade
+  >
+    {hexToRgb(color)}
+  </span>
+  <span
+    class="duration-250 w-full text-left font-mono text-lg font-light text-primary opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
+    in:fade
+  >
+    {color.toUpperCase()}
+  </span>
 </div>
