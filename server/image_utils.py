@@ -1,6 +1,7 @@
 import colorsys
 import re
 from enum import Enum
+from typing import Any, Dict, List, Tuple
 
 from retinaface import RetinaFace
 
@@ -24,16 +25,41 @@ class Season(Enum):
     WINTER = "winter"
 
 
-def get_analysis_by_skin_tone(skin_tone):
-    skin_tone = "#" + skin_tone
+def get_analysis_by_skin_tone(skin_tone: str) -> Dict[str, Any]:
+    """
+    Analyze and provide color analysis based on skin tone.
+
+    Args:
+        skin_tone (str): A hex code representing the skin tone (without the '#').
+
+    Returns:
+        Dict[str, Any]: A dictionary containing the skin tone (with '#'),
+                        the determined season, and the recommended colors.
+    """
     season = get_season_by_skin_tone(skin_tone)
     colors = get_colors_by_skin_tone(skin_tone)
-    # TODO:Add not recommended colors
+    skin_tone = "#" + skin_tone
 
-    return {"skin_tone": skin_tone, "season": season.value, "colors": colors}
+    analysis = {"skin_tone": skin_tone, "season": season.value, "colors": colors}
+    return analysis
 
 
-def get_padded_facial_area(facial_area, width, height):
+def get_padded_facial_area(
+    facial_area: List[int], width: int, height: int
+) -> List[int]:
+    """
+    Calculate a padded bounding box around a given facial area.
+
+    Args:
+        facial_area (list): A list of four integers [x1, y1, x2, y2] representing
+                            the top-left and bottom-right coordinates of the facial area of an image.
+        width (int): The width of the image.
+        height (int): The height of the image.
+
+    Returns:
+        list: A list of four integers [x1, y1, x2, y2] representing the top-left
+              and bottom-right coordinates of the padded facial area.
+    """
     center_x = (facial_area[0] + facial_area[2]) // 2
     center_y = (facial_area[1] + facial_area[3]) // 2
 
@@ -42,11 +68,6 @@ def get_padded_facial_area(facial_area, width, height):
         (facial_area[3] - center_y),
     )
 
-    print(facial_area)
-    print(width, height)
-    print(center_x, center_y)
-    print(padding)
-
     padded_facial_area = [
         max(0, center_x - ((facial_area[2] - facial_area[0] + padding) // 2)),
         max(0, center_y - ((facial_area[3] - facial_area[1] + padding) // 2)),
@@ -54,13 +75,24 @@ def get_padded_facial_area(facial_area, width, height):
         min(height, center_y + ((facial_area[3] - facial_area[1] + padding) // 2)),
     ]
 
-    print(padded_facial_area)
-
     return padded_facial_area
 
 
-def get_face(img_path):
-    """Detect the faces in the image."""
+def get_face(img_path: str) -> Tuple[List[Any], List[int]]:
+    """
+    Detect a face in the image and extract the facial area.
+
+    Args:
+        img_path (str): The path to the image file.
+
+    Returns:
+        Tuple[List[Any], List[int]]: A tuple containing the extracted face data and
+                                     the facial area coordinates.
+
+    Raises:
+        MultipleFacesError: If more than one face is detected in the image.
+        NoFacesError: If no face is detected in the image.
+    """
     faces = RetinaFace.detect_faces(img_path=img_path)
 
     if faces:
@@ -81,7 +113,16 @@ def get_face(img_path):
     )
 
 
-def get_seasonal_palette(season):
+def get_seasonal_palette(season: Season) -> List[str]:
+    """
+    Get a predefined color palette based on the given season.
+
+    Args:
+        season (Season): The season for which to retrieve the color palette.
+
+    Returns:
+        List[str]: A list of hex color codes representing the seasonal palette.
+    """
     palettes = {
         Season.WINTER: [
             "#0000FF",
@@ -143,8 +184,17 @@ def get_seasonal_palette(season):
     return palettes[season]
 
 
-def get_colors_by_skin_tone(skin_tone, num_colors=12):
-    """Generate a palette of colors that complement the given hex color."""
+def get_colors_by_skin_tone(skin_tone: str, num_colors: int = 12) -> List[str]:
+    """
+    Generate a palette of colors that complement the given skin tone.
+
+    Args:
+        skin_tone (str): The skin tone for which to generate the color palette.
+        num_colors (int, optional): The number of colors to include in the palette. Defaults to 12.
+
+    Returns:
+        List[str]: A list of hex color codes that complement the given skin tone.
+    """
     season = get_season_by_skin_tone(skin_tone)
     palette = get_seasonal_palette(season)
 
@@ -156,10 +206,19 @@ def get_colors_by_skin_tone(skin_tone, num_colors=12):
     return palette[:num_colors]
 
 
-def get_season_by_skin_tone(skin_tone):
+def get_season_by_skin_tone(skin_tone: str) -> Season:
+    """
+    Determine the season based on the given skin tone.
+
+    Args:
+        skin_tone (str): A hex code representing the skin tone.
+
+    Returns:
+        Season: The season corresponding to the skin tone.
+    """
     rgb_color = hex_to_rgb(skin_tone)
     r, g, b = rgb_color[0] / 255, rgb_color[1] / 255, rgb_color[2] / 255
-    h, l, s = colorsys.rgb_to_hls(r, g, b)
+    h, lightness, s = colorsys.rgb_to_hls(r, g, b)
 
     # Determine undertone (hue)
     if 0.5 < h <= 0.75:  # More blue/purple hues
@@ -170,7 +229,7 @@ def get_season_by_skin_tone(skin_tone):
         undertone = "neutral"
 
     # Determine value (light vs dark)
-    value = "light" if l > 0.5 else "dark"
+    value = "light" if lightness > 0.5 else "dark"
 
     # Determine chroma (muted vs bright)
     chroma = "bright" if s > 0.5 else "muted"
@@ -182,17 +241,46 @@ def get_season_by_skin_tone(skin_tone):
         return Season.AUTUMN if value == "dark" or chroma == "muted" else Season.SPRING
 
 
-def is_hex_color(hex_color):
-    """Validate if the input string is a valid hexadecimal color code."""
-    return re.match(r"^#?(?:[0-9a-fA-F]{3}){1,2}$", hex_color)
+def is_hex_color(hex_color: str) -> bool:
+    """
+    Validate if the input string is a valid hexadecimal color code.
+
+    Args:
+        hex_color (str): The hex color code to validate. The "#" is optional.
+
+    Returns:
+        bool: True if valid hex color code, False otherwise.
+    """
+    return bool(re.match(r"^#?(?:[0-9a-fA-F]{3}){1,2}$", hex_color))
 
 
-def hex_to_rgb(hex_color):
-    """Convert hex color to RGB tuple."""
+def hex_to_rgb(hex_color: str) -> Tuple[int, int, int]:
+    """
+    Convert hex color to RGB tuple.
+
+    Args:
+        hex_color (str): The hex color code to convert.
+
+    Returns:
+        Tuple[int, int, int]: The RGB representation of the hex color.
+    """
     hex_color = hex_color.lstrip("#")
-    return tuple(int(hex_color[i : i + 2], 16) for i in (0, 2, 4))
+    if len(hex_color) != 6:
+        raise ValueError("Invalid hex color format")
+
+    r, g, b = tuple(int(hex_color[i : i + 2], 16) for i in (0, 2, 4))
+
+    return (r, g, b)
 
 
-def rgb_to_hex(rgb_color):
-    """Convert RGB tuple to hex color."""
+def rgb_to_hex(rgb_color: Tuple[int, int, int]) -> str:
+    """
+    Convert RGB tuple to hex color.
+
+    Args:
+        rgb_color (Tuple[int, int, int]): The RGB color to convert.
+
+    Returns:
+        str: The hex representation of the RGB color.
+    """
     return "#{:02x}{:02x}{:02x}".format(*rgb_color)

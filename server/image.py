@@ -41,8 +41,6 @@ def get_skin_tone_and_facial_area_from_image():
 
         skin_tone = result["faces"][0].get("skin_tone").lower()
 
-        facial_area = [int(area) for area in facial_area]
-
         padded_facial_area = get_padded_facial_area(
             facial_area,
             width,
