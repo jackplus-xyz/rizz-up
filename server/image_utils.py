@@ -25,11 +25,38 @@ class Season(Enum):
 
 
 def get_analysis_by_skin_tone(skin_tone):
+    skin_tone = "#" + skin_tone
     season = get_season_by_skin_tone(skin_tone)
     colors = get_colors_by_skin_tone(skin_tone)
     # TODO:Add not recommended colors
 
     return {"skin_tone": skin_tone, "season": season.value, "colors": colors}
+
+
+def get_padded_facial_area(facial_area, width, height):
+    center_x = (facial_area[0] + facial_area[2]) // 2
+    center_y = (facial_area[1] + facial_area[3]) // 2
+
+    padding = max(
+        (facial_area[2] - center_x),
+        (facial_area[3] - center_y),
+    )
+
+    print(facial_area)
+    print(width, height)
+    print(center_x, center_y)
+    print(padding)
+
+    padded_facial_area = [
+        max(0, center_x - ((facial_area[2] - facial_area[0] + padding) // 2)),
+        max(0, center_y - ((facial_area[3] - facial_area[1] + padding) // 2)),
+        min(width, center_x + ((facial_area[2] - facial_area[0] + padding) // 2)),
+        min(height, center_y + ((facial_area[3] - facial_area[1] + padding) // 2)),
+    ]
+
+    print(padded_facial_area)
+
+    return padded_facial_area
 
 
 def get_face(img_path):
