@@ -26,7 +26,7 @@
     <SvgSpinners3DotsMove class="text-3xl text-muted-foreground" />
   {:else}
     <div
-      class="mx-auto flex flex-col items-start justify-center px-8 py-8 md:w-3/4 md:py-4 lg:w-1/2"
+      class="mx-auto flex flex-col items-start justify-center px-8 py-8 md:w-3/4 md:py-4 lg:w-2/3"
     >
       <div
         class="flex w-full flex-col items-center justify-start text-lg md:flex-row md:text-2xl"
