@@ -1,8 +1,11 @@
 import colorsys
 import re
+import sys
+from collections import Counter
 from enum import Enum
 from typing import Any, Dict, List, Tuple
 
+from PIL import Image
 from retinaface import RetinaFace
 
 
@@ -28,6 +31,10 @@ class Season(Enum):
 def get_analysis_by_skin_tone(skin_tone: str) -> Dict[str, Any]:
     """
     Analyze and provide color analysis based on skin tone.
+    The steps are:
+        1. Get the undertone: warm or cool
+        2. Get the hair and eye colors: light or dark
+        3. Determin the season based on the undertone and value
 
     Args:
         skin_tone (str): A hex code representing the skin tone (without the '#').
@@ -284,3 +291,34 @@ def rgb_to_hex(rgb_color: Tuple[int, int, int]) -> str:
         str: The hex representation of the RGB color.
     """
     return "#{:02x}{:02x}{:02x}".format(*rgb_color)
+
+
+def get_colors_from_file(img_path: str):
+    # Open the image file
+    with Image.open(img_path) as img:
+        # Convert image to RGB
+        img = img.convert("RGB")
+        # Get the colors from the image
+        colors = img.getdata()
+        # Count the frequency of each color
+        color_counts = Counter(colors)
+        # Get a list of unique colors
+        unique_colors = list(color_counts.keys())
+        # Convert colors to hex and display as blocks
+        for r, g, b in unique_colors:
+            print(
+                f"\x1b[48;2;{r};{g};{b}m{' '}\x1b[0m", end=""
+            )  # ANSI escape sequence for colored blocks
+        print()  # Newline after printing all colors
+
+
+def main():
+    # Get the list of image paths from the command line arguments
+    img_paths = sys.argv[1:]
+    for img_path in img_paths:
+        print(f"Colors in {img_path}:")
+        get_colors_from_file(img_path)
+
+
+if __name__ == "__main__":
+    main()
