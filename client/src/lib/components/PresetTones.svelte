@@ -3,20 +3,28 @@
   import Swatch from "./Swatch.svelte";
 
   let preset_tones = [
-    "#fde7ad",
-    "#d49e7a",
-    "#cf9660",
-    "#b36644",
-    "#ffe3c3",
-    "#edc091",
-    "#ad8b60",
-    "#7f4522",
-    "#f2c380",
-    "#936036",
-    "#5e310f",
-    "#291609",
+    "#f5ddc8",
+    "#ecd8a2",
+    "#e1b77e",
+    "#c48a58",
+    "#825e45",
+    "#56412d",
+
+    "#f4d1c8",
+    "#ecc7a2",
+    "#e1a67d",
+    "#c47858",
+    "#825245",
+    "#56352c",
+
+    "#e9d1d1",
+    "#dcc7ae",
+    "#caa18a",
+    "#b47864",
+    "#75524e",
+    "#4a3435",
   ];
-  preset_tones = shuffle(preset_tones);
+  // preset_tones = shuffle(preset_tones);
 
   function shuffle(array: string[]) {
     let currentIndex = array.length,
