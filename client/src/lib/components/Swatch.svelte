@@ -34,13 +34,13 @@
     style="background-color: {color};"
   />
   <span
-    class="duration-50 my-1 hidden w-full text-left font-mono text-xs font-bold text-primary opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100 md:flex"
+    class="duration-50 my-1 hidden w-full text-left font-mono text-xs font-bold text-primary opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100 md:text-sm"
     in:fade
   >
     {hexToRgb(color)}
   </span>
   <span
-    class="duration-50 hidden w-full text-left font-mono text-lg font-light text-primary opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100 md:flex"
+    class="duration-50 hidden w-full text-left font-mono font-light text-primary opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100 md:flex md:text-sm lg:text-lg"
     in:fade
   >
     {#if label}
