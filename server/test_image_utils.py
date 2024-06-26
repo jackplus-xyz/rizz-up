@@ -1,8 +1,25 @@
 import pytest
-from image_utils import is_hex_color
+import os
+import random
+from image_utils import get_face, is_hex_color
+from PIL import Image, ImageDraw
+
+img_files = os.listdir("test_images")
 
 
-# Parametrized tests for the 'is_hex_color' function
+def test_get_padded_facial_area():
+    img_path = random.choice(img_files)
+    facial_area = get_face(img_path)
+
+    # Open image with PIL
+    image_pil = Image.open(img_path)
+    draw = ImageDraw.Draw(image_pil)
+    for point in facial_area:
+        draw.point(point, fill=(0, 255, 0))
+
+    image_pil.show()
+
+
 @pytest.mark.parametrize(
     "hex_color, expected",
     [
