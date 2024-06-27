@@ -151,3 +151,4 @@ Temporary Items
 # Python
 __pycache__/
 test_images/
+venv/
