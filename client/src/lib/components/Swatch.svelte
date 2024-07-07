@@ -1,12 +1,6 @@
 <script lang="ts">
-  import { cubicOut } from "svelte/easing";
-  import { fly, fade } from "svelte/transition";
-
   export let color: string;
   export let label: string | null | undefined;
-  export let duration = 0;
-  export let translateY = 0;
-  export let translateX = 0;
 
   function hexToRgb(hex: string): number[] | null {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -18,33 +12,30 @@
         ]
       : null;
   }
+
+  function isDarkColor(color: string): boolean {
+    const rgb = hexToRgb(color);
+    if (!rgb) return false;
+    const [r, g, b] = rgb;
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    return brightness < 128;
+  }
+
+  $: textColor = isDarkColor(color) ? "text-white" : "text-black";
 </script>
 
 <div
-  class="duration-50 group relative flex aspect-square h-full w-full flex-col items-center justify-between border-muted-foreground transition-all hover:shadow md:hover:border md:hover:bg-background md:hover:p-2"
-  in:fly={{
-    x: translateX,
-    y: translateY,
-    duration: duration,
-    easing: cubicOut,
-  }}
+  class="group flex aspect-square w-full cursor-pointer flex-col items-center justify-center rounded-xl p-2 transition-all duration-200 ease-in-out md:rounded-3xl md:hover:rounded-xl"
+  style="background-color: {color};"
 >
-  <div
-    class="duration-400 aspect-square w-full rounded-xl border-black transition-all ease-in-out md:rounded-2xl md:group-hover:h-3/4 md:group-hover:rounded-none"
-    style="background-color: {color};"
-  />
   <span
-    class="duration-50 my-1 hidden w-full text-left font-mono text-xs font-bold text-primary opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100 md:text-sm"
-    in:fade
-  >
-    {hexToRgb(color)}
-  </span>
-
-  <span
-    class="duration-50 hidden w-full text-left font-mono font-light text-primary opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100 md:flex md:text-sm lg:text-lg"
-    in:fade
+    class="duration-50 lg:text-md {textColor} w-full text-center font-mono text-xs font-light opacity-0 transition-opacity duration-500 ease-in-out md:group-hover:opacity-100"
   >
     {label}
+  </span>
+  <span
+    class="duration-50 lg:text-md {textColor} w-full text-center font-mono text-xs font-light opacity-0 transition-opacity duration-500 ease-in-out md:group-hover:opacity-100"
+  >
     {color.toUpperCase()}
   </span>
 </div>
