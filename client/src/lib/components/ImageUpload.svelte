@@ -6,11 +6,9 @@
   import { goto } from "$app/navigation";
   import { fade } from "svelte/transition";
   import { serverUrl } from "$lib/config.js";
-  import { imgSrcStore, analysisStore } from "$lib/stores";
 
   let files: FileList;
   let errorMessage = "";
-  let skinTone = "";
   let isError = false;
   let isUploading = false;
   let imgSrc = "";
@@ -71,12 +69,12 @@
       }
 
       const data = await response.json();
-      if (data) {
-        const croppedImageSrc = "data:image/png;base64," + data.cropped_image;
-        imgSrcStore.set(croppedImageSrc);
-        analysisStore.set(data.analysis);
-
+      if (data && data.cropped_image && data.analysis) {
+        localStorage.setItem("croppedImage", data.cropped_image);
+        localStorage.setItem("analysis", JSON.stringify(data.analysis));
         goto(`/analysis`);
+      } else {
+        throw new Error("Received incomplete data from server");
       }
     } catch (error) {
       handleError(

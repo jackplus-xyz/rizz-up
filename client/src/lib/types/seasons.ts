@@ -1,0 +1,19 @@
+export enum Seasons {
+  LIGHT_SPRING = "LIGHT_SPRING",
+  WARM_SPRING = "WARM_SPRING",
+  BRIGHT_SPRING = "BRIGHT_SPRING",
+  LIGHT_SUMMER = "LIGHT_SUMMER",
+  COOL_SUMMER = "COOL_SUMMER",
+  SOFT_SUMMER = "SOFT_SUMMER",
+  SOFT_AUTUMN = "SOFT_AUTUMN",
+  WARM_AUTUMN = "WARM_AUTUMN",
+  DEEP_AUTUMN = "DEEP_AUTUMN",
+  DEEP_WINTER = "DEEP_WINTER",
+  COOL_WINTER = "COOL_WINTER",
+  BRIGHT_WINTER = "BRIGHT_WINTER",
+}
+
+export interface SeasonInfo {
+  description: string;
+  colors: string[];
+}

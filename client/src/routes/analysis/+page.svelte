@@ -1,10 +1,8 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import { imgSrcStore, analysisStore } from "$lib/stores";
   import SwatchSlide from "$lib/components/SwatchSlide.svelte";
   import SvgSpinners3DotsMove from "~icons/svg-spinners/3-dots-move";
   import GuidanceAlertTriangle from "~icons/guidance/alert-triangle";
-  import { get } from "svelte/store";
   import { onMount } from "svelte";
 
   interface Analysis {
@@ -28,25 +26,32 @@
   let analysis: Analysis;
   let selectedColor: string = "";
   let isLoading: boolean = true;
+  let croppedImage = "";
 
   function handleColorSelected(event: CustomEvent<{ color: string }>) {
     selectedColor = event.detail.color;
   }
 
   onMount(() => {
-    const analysisData = get(analysisStore);
-    if (analysisData) {
-      try {
-        if (typeof analysisData === "object" && analysisData !== null) {
-          analysis = analysisData;
-        } else {
-          analysis = JSON.parse(analysisData);
-        }
-      } catch (error) {
-        console.error("Error parsing analysis:", error);
-      } finally {
-        isLoading = false;
+    try {
+      const croppedImageData = localStorage.getItem("croppedImage");
+      const analysisData = localStorage.getItem("analysis");
+
+      if (croppedImageData) {
+        croppedImage = "data:image/jpeg;base64," + croppedImageData;
+      } else {
+        throw new Error("Cropped image data not found");
       }
+
+      if (analysisData) {
+        analysis = JSON.parse(analysisData) as Analysis;
+      } else {
+        throw new Error("Analysis data not found");
+      }
+    } catch (err) {
+      console.error("Error retrieving or parsing data:", err);
+    } finally {
+      isLoading = false;
     }
   });
 </script>
@@ -62,8 +67,8 @@
     >
       <div class="relative w-full">
         <img
-          src={$imgSrcStore}
-          alt="UploadedImage"
+          src={croppedImage}
+          alt="Preview"
           class="w-full rounded-lg"
           in:fade
         />
