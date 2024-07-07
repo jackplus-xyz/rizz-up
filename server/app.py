@@ -2,7 +2,6 @@ import os
 
 from flask import Flask
 from flask_cors import CORS
-from palette import bp as palette_bp
 from image import bp as image_bp
 from dotenv import load_dotenv
 
@@ -21,7 +20,6 @@ frontend_url = (
 )
 
 app = Flask(__name__)
-app.register_blueprint(palette_bp)
 app.register_blueprint(image_bp)
 
 CORS(app, origins=frontend_url)

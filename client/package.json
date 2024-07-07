@@ -16,7 +16,7 @@
 		"@iconify-json/mdi": "^1.1.66",
 		"@iconify-json/mdi-light": "^1.1.10",
 		"@iconify-json/svg-spinners": "^1.1.2",
-		"@iconify/json": "^2.2.216",
+		"@iconify/json": "^2.2.224",
 		"@skeletonlabs/skeleton": "^2.10.0",
 		"@skeletonlabs/tw-plugin": "^0.4.0",
 		"@sveltejs/adapter-auto": "^3.0.0",
@@ -35,6 +35,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@anthropic-ai/sdk": "^0.24.3",
 		"bits-ui": "^0.21.10",
 		"clsx": "^2.1.1",
 		"fractils": "^3.1.3",

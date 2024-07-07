@@ -6,7 +6,7 @@
   import { goto } from "$app/navigation";
   import { fade } from "svelte/transition";
   import { serverUrl } from "$lib/config.js";
-  import { imgSrc as imgSrcStore } from "$lib/stores";
+  import { imgSrcStore, analysisStore } from "$lib/stores";
 
   let files: FileList;
   let errorMessage = "";
@@ -33,11 +33,23 @@
     imgSrc = "";
   }
 
+  function scrollToUpload(elementId: string) {
+    const elementToScrollTo = document.getElementById(elementId);
+
+    if (!elementToScrollTo) {
+      console.warn(`Element with ID '${elementId}' not found.`);
+      return;
+    }
+
+    elementToScrollTo.scrollIntoView({ behavior: "smooth" });
+  }
+
   async function submitImage(): Promise<void> {
     if (!files) {
       handleError("No image to submit");
       return;
     }
+    scrollToUpload("upload-image");
 
     try {
       isError = false;
@@ -60,12 +72,11 @@
 
       const data = await response.json();
       if (data) {
-        const skinTone = data.skin_tone;
         const croppedImageSrc = "data:image/png;base64," + data.cropped_image;
         imgSrcStore.set(croppedImageSrc);
+        analysisStore.set(data.analysis);
 
-        const formattedSkinTone = skinTone.replace(/^#*/, "");
-        goto(`/analysis/${formattedSkinTone}`);
+        goto(`/analysis`);
       }
     } catch (error) {
       handleError(
@@ -85,6 +96,7 @@
 {#if showImage}
   <div
     class="flex h-fit max-w-sm flex-col items-center justify-center rounded-xl border bg-primary-foreground p-4"
+    id="upload-image"
   >
     <img
       src={imgSrc}

@@ -39,14 +39,12 @@
   >
     {hexToRgb(color)}
   </span>
+
   <span
     class="duration-50 hidden w-full text-left font-mono font-light text-primary opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100 md:flex md:text-sm lg:text-lg"
     in:fade
   >
-    {#if label}
-      {label}
-    {:else}
-      {color.toUpperCase()}
-    {/if}
+    {label}
+    {color.toUpperCase()}
   </span>
 </div>

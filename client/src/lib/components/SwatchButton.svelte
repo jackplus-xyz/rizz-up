@@ -3,6 +3,7 @@
   import { writable } from "svelte/store";
   import Swatch from "./Swatch.svelte";
 
+  export let label: string;
   export let color: string;
   export let duration = 0;
   export let translateY = 100;
@@ -33,7 +34,7 @@
 
 <button on:click={() => selectColor(color)} class="w-full">
   <Swatch
-    label={$copiedTimeout > 0 ? "Copied!" : null}
+    label={$copiedTimeout > 0 ? "Copied!" : label ? label : null}
     {color}
     {duration}
     {translateX}
