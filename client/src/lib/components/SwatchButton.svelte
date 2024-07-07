@@ -5,9 +5,6 @@
 
   export let label: string;
   export let color: string;
-  export let duration = 0;
-  export let translateY = 100;
-  export let translateX = 0;
   const copiedTimeout = writable(0);
 
   const dispatch = createEventDispatcher();
@@ -22,6 +19,11 @@
       .catch((err) => {
         console.error("Failed to copy color to clipboard:", err);
       });
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }
 
   $: copiedTimeout.subscribe((value) => {
@@ -36,9 +38,6 @@
   <Swatch
     label={$copiedTimeout > 0 ? "Copied!" : label ? label : null}
     {color}
-    {duration}
-    {translateX}
-    {translateY}
     on:colorSelected
   />
 </button>

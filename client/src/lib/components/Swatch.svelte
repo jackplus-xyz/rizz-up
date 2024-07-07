@@ -25,16 +25,16 @@
 </script>
 
 <div
-  class="group flex aspect-square w-full cursor-pointer flex-col items-center justify-center rounded-xl p-2 transition-all duration-200 ease-in-out md:rounded-3xl md:hover:rounded-xl"
+  class="group flex aspect-square w-full cursor-pointer flex-col items-center justify-center rounded-xl p-2 transition-all duration-200 ease-in-out md:rounded-2xl md:hover:rounded-lg lg:rounded-3xl lg:hover:rounded-xl"
   style="background-color: {color};"
 >
   <span
-    class="duration-50 lg:text-md {textColor} w-full text-center font-mono text-xs font-light opacity-0 transition-opacity duration-500 ease-in-out md:group-hover:opacity-100"
+    class="duration-50 lg:text-md {textColor} w-full text-center font-mono text-xs font-light opacity-0 transition-opacity duration-500 ease-in-out max-sm:hidden md:group-hover:opacity-100"
   >
     {label}
   </span>
   <span
-    class="duration-50 lg:text-md {textColor} w-full text-center font-mono text-xs font-light opacity-0 transition-opacity duration-500 ease-in-out md:group-hover:opacity-100"
+    class="duration-50 lg:text-md {textColor} w-full text-center font-mono text-xs font-light opacity-0 transition-opacity duration-500 ease-in-out max-sm:hidden md:group-hover:opacity-100"
   >
     {color.toUpperCase()}
   </span>
