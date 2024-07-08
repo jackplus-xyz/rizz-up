@@ -1,2 +1,1 @@
-export { theme } from './theme.js';
-export { imgSrc } from './img-src.js';
+export { theme } from "./theme.js";

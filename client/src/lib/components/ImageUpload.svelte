@@ -6,15 +6,20 @@
   import { goto } from "$app/navigation";
   import { fade } from "svelte/transition";
   import { serverUrl } from "$lib/config.js";
-  import { imgSrc as imgSrcStore } from "$lib/stores";
+  import Alert from "$lib/components/Alert.svelte";
 
   let files: FileList;
   let errorMessage = "";
-  let skinTone = "";
   let isError = false;
   let isUploading = false;
   let imgSrc = "";
   $: showImage = imgSrc !== "";
+
+  const tip = {
+    title: "Tip",
+    description:
+      "Use a photo with natural lighting, minimal shadows, and no filters for the most accurate analysis.",
+  };
 
   function onChangeHandler(e: Event): void {
     const target = e.target as HTMLInputElement;
@@ -33,11 +38,23 @@
     imgSrc = "";
   }
 
+  function scrollToUpload(elementId: string) {
+    const elementToScrollTo = document.getElementById(elementId);
+
+    if (!elementToScrollTo) {
+      console.warn(`Element with ID '${elementId}' not found.`);
+      return;
+    }
+
+    elementToScrollTo.scrollIntoView({ behavior: "smooth" });
+  }
+
   async function submitImage(): Promise<void> {
     if (!files) {
       handleError("No image to submit");
       return;
     }
+    scrollToUpload("upload-image");
 
     try {
       isError = false;
@@ -59,13 +76,12 @@
       }
 
       const data = await response.json();
-      if (data) {
-        const skinTone = data.skin_tone;
-        const croppedImageSrc = "data:image/png;base64," + data.cropped_image;
-        imgSrcStore.set(croppedImageSrc);
-
-        const formattedSkinTone = skinTone.replace(/^#*/, "");
-        goto(`/analysis/${formattedSkinTone}`);
+      if (data && data.cropped_image && data.analysis) {
+        localStorage.setItem("croppedImage", data.cropped_image);
+        localStorage.setItem("analysis", JSON.stringify(data.analysis));
+        goto(`/analysis`);
+      } else {
+        throw new Error("Received incomplete data from server");
       }
     } catch (error) {
       handleError(
@@ -85,6 +101,7 @@
 {#if showImage}
   <div
     class="flex h-fit max-w-sm flex-col items-center justify-center rounded-xl border bg-primary-foreground p-4"
+    id="upload-image"
   >
     <img
       src={imgSrc}
@@ -132,8 +149,8 @@
         Click to upload a photo or drag and drop it here.
       </svelte:fragment>
       <svelte:fragment slot="meta"
-        >Allowed formats: PNG and JPG.</svelte:fragment
-      >
+        >Allowed formats: PNG and JPG.
+      </svelte:fragment>
     </FileDropzone>
   </div>
 {/if}

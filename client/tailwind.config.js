@@ -1,4 +1,5 @@
 import { skeleton } from "@skeletonlabs/tw-plugin";
+import tailwindcssDebugScreens from "tailwindcss-debug-screens";
 import { join } from "path";
 
 /** @type {import('tailwindcss').Config} */
@@ -12,7 +13,7 @@ const config = {
     ),
   ],
   safelist: ["dark"],
-  plugins: [skeleton],
+  plugins: [skeleton, tailwindcssDebugScreens],
   theme: {
     container: {
       center: true,
