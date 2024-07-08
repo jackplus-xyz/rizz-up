@@ -11,12 +11,11 @@ load_dotenv()
 ENV = os.getenv("ENV")
 SERVER_PORT = os.getenv("SERVER_PORT")
 FRONTEND_PORT = os.getenv("FRONTEND_PORT")
+PROD_FRONTEND_URL = os.getenv("PROD_FRONTEND_URL")
 
 is_development = ENV == "development"
 frontend_url = (
-    f"http://localhost:{FRONTEND_PORT}"
-    if is_development
-    else os.getenv("PROD_FRONTEND_URL")
+    f"http://localhost:{FRONTEND_PORT}" if is_development else PROD_FRONTEND_URL
 )
 
 app = Flask(__name__)
