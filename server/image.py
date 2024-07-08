@@ -1,4 +1,5 @@
 import base64
+import re
 import io
 import json
 import logging
@@ -91,7 +92,7 @@ def get_season(cropped_img_base64: str):
         model="claude-3-5-sonnet-20240620",
         max_tokens=4,
         temperature=0,
-        system="You are an expert on seasonal color analysis. Provide only the determined season name from these options: Light Spring, Warm Spring, Bright Spring, Light Summer, Cool Summer, Soft Summer, Soft Autumn, Warm Autumn, Deep Autumn, Deep Winter, Cool Winter.",
+        system="You are an expert on seasonal color analysis, with deep knowledge of the Munsell color system and its application to human coloring. You understand how to assess skin undertones (cool, warm, neutral), value (light to dark), and chroma (clear/bright vs. soft/muted). You can accurately evaluate these factors in facial images to determine seasonal color classification. Your analysis considers the interplay of skin, hair, and eye color, as well as overall contrast levels. You're familiar with the nuances that distinguish the 12 seasonal subtypes and can confidently classify individuals based on their unique combination of hue, value, and chroma characteristics.",
         messages=[
             {
                 "role": "user",
@@ -106,7 +107,7 @@ def get_season(cropped_img_base64: str):
                     },
                     {
                         "type": "text",
-                        "text": "Analyze the color season of the person in this image. Provide only the determined season name.",
+                        "text": "Analyze the color season of the person in this image. Determine the single most likely season from these options: Light Spring, Warm Spring, Bright Spring, Light Summer, Cool Summer, Soft Summer, Soft Autumn, Warm Autumn, Deep Autumn, Deep Winter, Cool Winter, Bright Winter. Provide only the determined season name, with no additional explanation or commentary.",
                     },
                 ],
             },
@@ -163,7 +164,7 @@ def get_analysis(cropped_img_base64: str):
                 },
                 {
                     "type": "text",
-                    "text": f"The person's color season is {season}. Provide a detailed skin tone analysis, recommend a complementary color palette, and list colors to avoid. Respond in JSON format.",
+                    "text": f'The person\'s color season is {season}. Analyze the provided image for seasonal color typing using the provided seasonal colors information. Respond in JSON format with keys:"characteristics": Key features of person\'s coloring\n,"colorsToSuggest"(list): List of dicts with "name" and "hex_code" for 12 complementary colors\n"reasonToSuggest": Why these colors complement the person\n"colorsToAvoid"(list): List of dicts with "name" and "hex_code" for 12 unflattering colors (exclude uncommon clothing colors or extremely saturated hues)\n"reasonToAvoid": Why these colors clash with the person\n"content": <50 words explanation of season determination, starting with "Based on the image provided, you have..."',
                 },
             ],
         },
@@ -205,11 +206,38 @@ def get_analysis(cropped_img_base64: str):
         tools=[get_seasonal_colors_tool],
     )
 
-    message = follow_up_response.content[0].text
+    message = str(follow_up_response.content[0].text)
+    print(message)
 
     def extract_json(response):
-        json_start = response.index("{")
+        # Find the first occurrence of '{' and the last occurrence of '}'
+        json_start = response.find("{")
         json_end = response.rfind("}")
-        return json.loads(response[json_start : json_end + 1])
 
-    return extract_json(message)
+        if json_start == -1 or json_end == -1:
+            raise ValueError("No valid JSON object found in the response")
+
+        # Extract the potential JSON string
+        json_str = response[json_start : json_end + 1]
+
+        # Remove any invalid control characters
+        json_str = re.sub(r"[\x00-\x1F\x7F-\x9F]", "", json_str)
+
+        # Try to parse the cleaned JSON string
+        try:
+            return json.loads(json_str)
+        except json.JSONDecodeError as e:
+            print(f"Error decoding JSON: {e}")
+            print(f"Problematic JSON string: {json_str}")
+            raise
+
+    try:
+        extracted_json = extract_json(message)
+        extracted_json["season"] = season
+        return extracted_json
+    except json.JSONDecodeError as e:
+        print(f"Error extracting JSON: {e}")
+        return json.dumps({"error": "Failed to extract valid JSON from the response"})
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return json.dumps({"error": f"An unexpected error occurred: {str(e)}"})

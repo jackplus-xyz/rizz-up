@@ -1,16 +1,8 @@
 <script lang="ts">
   import GuidanceLeft2ShortArrow from "~icons/guidance/left-2-short-arrow";
-  import GuidanceDownAngleArrow from "~icons/guidance/down-angle-arrow";
   import GuidanceDown2ShortArrow from "~icons/guidance/down-2-short-arrow";
-  import PresetTones from "$lib/components/PresetTones.svelte";
   import Hero from "$lib/components/Hero.svelte";
-  import { spring } from "svelte/motion";
   import ImageUpload from "$lib/components/ImageUpload.svelte";
-
-  let arrowTransform = spring(0, {
-    stiffness: 0.1,
-    damping: 0.2,
-  });
 </script>
 
 <svelte:head>

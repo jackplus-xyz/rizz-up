@@ -13,19 +13,30 @@
       : null;
   }
 
-  function isDarkColor(color: string): boolean {
+  function isExtremeBrightness(color: string): boolean {
     const rgb = hexToRgb(color);
     if (!rgb) return false;
     const [r, g, b] = rgb;
     const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-    return brightness < 128;
+    return brightness < 30 || brightness > 225;
   }
 
-  $: textColor = isDarkColor(color) ? "text-white" : "text-black";
+  function getTextColor(color: string): string {
+    const rgb = hexToRgb(color);
+    if (!rgb) return "text-black";
+    const [r, g, b] = rgb;
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    return brightness < 128 ? "text-white" : "text-black";
+  }
+
+  $: textColor = getTextColor(color);
+  $: needsBorder = isExtremeBrightness(color);
 </script>
 
 <div
-  class="group flex aspect-square w-full cursor-pointer flex-col items-center justify-center rounded-xl p-2 transition-all duration-200 ease-in-out md:rounded-2xl md:hover:rounded-lg lg:rounded-3xl lg:hover:rounded-xl"
+  class="{needsBorder
+    ? 'border-2 border-muted'
+    : ''} group flex aspect-square w-full cursor-pointer flex-col items-center justify-center rounded-xl p-2 transition-all duration-200 ease-in-out md:rounded-2xl md:hover:rounded-lg lg:rounded-3xl lg:hover:rounded-xl"
   style="background-color: {color};"
 >
   <span

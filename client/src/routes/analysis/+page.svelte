@@ -1,7 +1,7 @@
+<!-- src/routes/analysis/+page.svelte -->
 <script lang="ts">
   import * as Tabs from "$lib/components/ui/tabs";
   import { fly } from "svelte/transition";
-  import html2canvas from "html2canvas";
   import SwatchSlide from "$lib/components/SwatchSlide.svelte";
   import SvgSpinners3DotsMove from "~icons/svg-spinners/3-dots-move";
   import { onMount } from "svelte";
@@ -10,6 +10,7 @@
   import { quadInOut } from "svelte/easing";
   import { Button } from "$lib/components/ui/button";
   import { Share, Save } from "lucide-svelte";
+  import html2canvas from "html2canvas";
 
   interface Analysis {
     season: string;
@@ -86,21 +87,84 @@
   }
 
   async function handleSave() {
-    if (!resultContainer) return;
-
     try {
-      const canvas = await html2canvas(resultContainer, {
+      // Create a new div to hold our save layout
+      const saveContainer = document.createElement("div");
+      saveContainer.className =
+        "mx-auto flex min-h-screen w-full flex-col items-center justify-center px-8 py-4 font-serif md:w-4/5 md:py-8 lg:w-1/2";
+      saveContainer.style.position = "absolute";
+      saveContainer.style.left = "-9999px";
+      document.body.appendChild(saveContainer);
+
+      const colorsToSuggestSwatchSlide = document.getElementById(
+        "colorsToSuggestSwatchSlide",
+      )!.innerHTML;
+
+      const colorsToAvoidSwatchSlide = document.getElementById(
+        "colorsToAvoidSwatchSlide",
+      )!.innerHTML;
+
+      const disclaimerContainer = document.getElementById(
+        "disclaimer-container",
+      )!.innerHTML;
+
+      // Populate the save container with the layout from save page
+      saveContainer.innerHTML = `
+      <h1 class="w-full text-center">Your Personal Color Analysis</h1>
+      <div class="flex h-fit w-3/4 max-w-sm flex-col items-center justify-center rounded-xl border bg-primary-foreground p-4 md:w-full">
+        <div class="relative w-full">
+          <img src="${croppedImage}" alt="Preview" class="w-full rounded-lg" />
+        </div>
+      </div>
+      <div class="my-2 flex h-fit flex-col items-center justify-center md:my-4">
+        <h2 class="${seasonTextColor} text-center italic">
+          ${analysis.season}
+        </h2>
+        <p class="text-center max-sm:hidden">
+          ${analysis.characteristics}
+        </p>
+        <p>
+          ${analysis.content}
+        </p>
+        <h2 class="text-center italic">Recommended Colors</h2>
+        <p>
+        <div id="colorsToSuggest">
+          ${colorsToSuggestSwatchSlide}
+        </div>
+        </p>
+        <div id="colorsToSuggest"></div>
+        <h2 class="text-center italic">Colors to Avoid</h2>
+        <p>
+         ${analysis.reasonToAvoid}
+        </p>
+        <div id="colorsToAvoid">
+          ${colorsToAvoidSwatchSlide}
+        </div>
+        <div id="disclaimer-container" class="mt-8">
+          ${disclaimerContainer}
+        </div>
+      </div>
+    `;
+
+      // Add the swatch slides to the save saveContainer
+
+      // Generate the image
+      const canvas = await html2canvas(saveContainer, {
         scale: 2,
         useCORS: true,
         logging: false,
         allowTaint: true,
       });
 
+      // Convert to data URL and trigger download
       const dataUrl = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.download = "color_analysis.png";
       link.href = dataUrl;
       link.click();
+
+      // Clean up
+      document.body.removeChild(saveContainer);
     } catch (error) {
       console.error("Error generating image:", error);
       alert("There was an error generating the image. Please try again.");
@@ -190,7 +254,7 @@
           <p>
             {analysis.reasonToSuggest}
           </p>
-          <div class="mb-4">
+          <div class="mb-4" id="colorsToSuggestSwatchSlide">
             <SwatchSlide
               colors={analysis.colorsToSuggest}
               on:colorSelected={handleColorSelected}
@@ -203,7 +267,7 @@
           <p>
             {analysis.reasonToAvoid}
           </p>
-          <div class="mb-4">
+          <div class="mb-4" id="colorsToAvoidSwatchSlide">
             <SwatchSlide
               colors={analysis.colorsToAvoid}
               on:colorSelected={handleColorSelected}
@@ -211,12 +275,12 @@
           </div>
           <Alert {...tip} />
         </Tabs.Content>
-        <span class="mt-4 lg:mt-8">
+        <span class="mt-4 lg:mt-8" id="disclaimer-container">
           <Alert {...disclaimer} />
         </span>
       </Tabs.Root>
     </div>
-    <div class="mt-4 flex space-x-4">
+    <div class="mt-4 flex space-x-4 font-sans">
       <Button on:click={handleShare} variant="outline">
         <Share class="mr-2 h-4 w-4" />
         Share

@@ -18,7 +18,7 @@ class Seasons(Enum):
 
 SEASONAL_COLORS = {
     Seasons.LIGHT_SPRING: {
-        "description": "Light springs have peachy or rosy fair skin that may tan or freckle.  They have golden blonde or brown hair with blue, green, hazel, or even light brown eyes.  They look best in light, warm, clear colors. They should avoid wearing dark or overpowering colors that can wash them out. ",
+        "description": "Light Spring looks best in light, warm, and clear colors that enhance their delicate features. They should avoid dark or overpowering hues that can wash out their natural coloring.",
         "colors": [
             "#A69F45",
             "#7DA07A",
@@ -39,7 +39,7 @@ SEASONAL_COLORS = {
         ],
     },
     Seasons.WARM_SPRING: {
-        "description": "Warm springs have warm traits in their eyes, skin, and hair.  They have warm porcelain, to light bronze skin with golden blonde hair, strawberry blonde hair, or coppery red hair.  They have light eyes.  They look best in vibrant, warm-toned colors that compliment the glowiness in their complexions. They should avoid cool-toned pastels and darker shades. They look fantastic in oranges and yellows that bring out their warm intensity.",
+        "description": "Warm Spring shines in vibrant, warm-toned colors that accentuate their natural glow. They should steer clear of cool-toned pastels and darker shades, while embracing oranges and yellows that highlight their warm intensity.",
         "colors": [
             "#ECAB4D",
             "#3B7545",
@@ -60,7 +60,7 @@ SEASONAL_COLORS = {
         ],
     },
     Seasons.BRIGHT_SPRING: {
-        "description": "Bright Springs has a very wide spectrum of possibilities. You will find redheads, brunettes, and blondes. Similarly, you will find people with my coloring (pale brunettes) that are Bright Spring. We tend to think of Bright Springs as tan, glowing beach goddesses with bright green eyes, but the reality is much more expansive. People can be hesitant to type themselves as a Bright Spring because they don’t feel “bright” enough. They think I don’t “glow” more than anyone else I know. But that’s the thing, we all look like normal people out in the world. Bright Springs just shine when they are in their colors, just like every other season. Bright springs have a wide range of skin tones from pale to golden brown and black.   Their hair colors range from blonde to medium, and dark brown and can include some red or copper highlights. Their eye range often has a mix of colors in it with blue, green, brown, and topaz being common. They look best in saturated, warm hues. Generally, they should avoid nudes and muted/dusty pastels as it will wash them out. Bright Springs are high-contrast compared to the rest of the spring family, which lets them embrace bright colors easily. And they also border Bright Winter so they have a bit more coolness seeping into their palette than True Spring.",
+        "description": "Bright Spring thrives in saturated, warm hues with a touch of coolness. They should avoid muted or dusty pastels and nudes, as these can wash them out. High-contrast and bright colors are their forte, allowing them to stand out brilliantly.",
         "colors": [
             "#254F92",
             "#2F4579",
@@ -93,7 +93,7 @@ SEASONAL_COLORS = {
         ],
     },
     Seasons.LIGHT_SUMMER: {
-        "description": "Light summers have neutral skin that burns easily and can have a rosy tint to it.  Their hair is icy and in the blond or very light brown family.  They have light-colored eyes like blue, green, or gray.  They look best in light colors that are dusty, or powdery. The light colors complement the light tones in their coloring and don’t overpower their delicate features. They should generally avoid dark colors or high-saturation warm tones.",
+        "description": "Light Summer looks best in light, dusty, or powdery colors that complement their delicate features without overpowering them. They should generally avoid dark colors or high-saturation warm tones, which can clash with their subtle coloring.",
         "colors": [
             "#F6D087",
             "#2CA17C",
@@ -114,7 +114,7 @@ SEASONAL_COLORS = {
         ],
     },
     Seasons.COOL_SUMMER: {
-        "description": "Cool summers have cool or blue undertones to all three characteristics (skin, hair, and eyes). They often have cool or neutral skin tones with grey, blue or slate eyes.  Their hair tones are ashy in nature and range from medium to dark brown (not black). They look best in cool hues that are medium and sometimes dark in the color palette. Their color palette is muted with blue-pink undertones but does not have the shaded quality of Soft Summer. They should avoid warm tones, especially yellow-toned hues or earthy warm shades. Cool Summer’s most important characteristic is “hue”, which is cool and represented in the “true” part of their name. Both sister seasons (soft summer and light summer) are also cool-based. So Cool Summers will not be getting any warmth in the palette. They still get colors like yellow and red in their palette, but they will be created with a blue base, not a yellow one. Cool Summers are like English roses in a beautiful garden. They have a delicate presence and a tranquil feel to their look.",
+        "description": "Cool Summer excels in cool hues of medium to sometimes dark shades, with a muted quality and blue-pink undertones. They should avoid warm tones, especially yellow-based hues or earthy warm shades, as these can clash with their cool coloring.",
         "colors": [
             "#A2C1EB",
             "#70AED5",
@@ -147,7 +147,7 @@ SEASONAL_COLORS = {
         ],
     },
     Seasons.SOFT_SUMMER: {
-        "description": "Soft Summers are the shaded side of the summer season so they are muted but have Soft Autumn on one side so we see a bit of warmth creeping in. Your color palette ranges from light stone to charcoal. Compared to Deep Winter, they can handle less depth and saturation, but Soft Summer handles the deepest summer colors of the Summer seasons. Soft summers can have the following characteristics. Soft summers have neutral undertones or blue undertones with a pink tint.  They can also have brown skin tones that have a neutral undertone.  Their hair colors are in the light-to-medium brown color family with ash blond highlights or tints. Soft summers have low contrast between their eyes, hair, and skin.  They look best in soft and muted hues that are more subtle (usually in the cooler color family).  They should generally avoid clear colors that are neon or especially rich, which tends to overwhelm their complexions subtlety. They have a floatiness quality to their coloring as if they might drift away. We can imagine a foggy morning with soft lavender skies and soft gray clouds rolling over the water. They look otherworldly in colors like muted merlot, softened grape, and dusty blues. Soft Summers can look tan. The concept of if you tan you are warm-toned is incorrect. ",
+        "description": "Soft Summer should generally avoid clear, neon, or rich colors that can overwhelm their delicate complexion. Their palette ranges from light stone to charcoal, with a soft, ethereal quality.",
         "colors": [
             "#A0C1EA",
             "#70AED5",
@@ -180,7 +180,7 @@ SEASONAL_COLORS = {
         ],
     },
     Seasons.SOFT_AUTUMN: {
-        "description": "A soft autumn does not have a lot of contrast between their hair and skin. Their skin tone often has neutral undertones, but can also have more prominent warm undertones.  They look best in muted colors with warm undertones, that pair nicely with their skin tones hue. They also look great in blended colors (not primary).  They should generally avoid stark colors (black), or bright colors (high pigment, like fuchsia, etc) because they tend to make them look sallow. ",
+        "description": "Soft Autumn looks best in muted colors with warm undertones that complement their skin's hue. They excel in blended colors rather than primary hues. They should generally avoid stark colors like black or bright, highly pigmented shades such as fuchsia, as these can make them appear sallow.",
         "colors": [
             "#78AACB",
             "#33618A",
@@ -213,7 +213,7 @@ SEASONAL_COLORS = {
         ],
     },
     Seasons.WARM_AUTUMN: {
-        "description": "Warm autumns have the following characteristics. Keep in mind your holistic view of your colorings, because True Autumns have a earthy and harvest quality to their coloring. They are like fall afternoons with fall leaves turning and the pumpkins on the front porch, with caramel apples and soft sun through the clouds. There is earthiness and warmth here. Warm Autumns have warm undertones to their skin and the tone can range from ivory to medium brown.  They typically have hair colors that range from medium to dark brown or red (including auburn) all with golden undertones.  Their eyes are light brown, green, or (green) hazel.  They look amazing in rich and muted warm tones, especially earthy colors like brown and rust.  They should generally avoid pastels or pastel brights that wash them out. Their dominant characteristic is hue (purely warm). So both of their sister seasons Soft Autumn and Dark Autumn will also have warm undertones. Autumns are also muted, so they have a rich rustic quality to the color palette filled with pumpkin oranges, butterscotch, and terracotta. They still have their versions of blues and purples and all other hues, but they are warmed up (with yellow) and toned down (with some gray added). Their palette range has their version of white which is warm or soft or sometimes a light putty beige, to their version of black which is a warm pewter.",
+        "description": "Warm Autumn shines in rich and muted warm tones, especially earthy colors like brown and rust. They should generally avoid pastels or bright pastels that can wash them out. Their palette is characterized by pumpkin oranges, butterscotch, and terracotta, with all hues warmed up and toned down.",
         "colors": [
             "#867C41",
             "#57843D",
@@ -246,11 +246,11 @@ SEASONAL_COLORS = {
         ],
     },
     Seasons.DEEP_AUTUMN: {
-        "description": "Deep autumns have the following characteristics as general color combinations. But remember that seasonal color is a holistic approach so you have to look at your entire coloring and how they relate to hue, value, and chroma. Do not just say I have brown hair and brown eyes so I must be Dark Autumn. Dark autumns are autumns first and foremost but they border Dark winter, so they can have a bit of winter’s coolness and crispness seep in. Darkness in color is their primary focus in colors. This does not mean they only have dark colors in their palette but that the range of their colors includes more shades and tones (even if the color is lighter in appearance). Whereas true autumn has your pumpkin oranges, Dark Autumn transitions to the brick reds, and warm redwood colors. There’s richness but still that evident warmth and harvest quality. They are slightly more pigmented than True Autumn because your chroma is going from medium (in True Autumn) to medium-high in Dark Autumn. Deep autumns have warm tones in their hair, eyes, and skin.  They have medium to dark brown hair with golden undertones.  Their eyes are darker, and range from dark blue, dark green, to dark brown or brown/black.  They look amazing in bold, warm colors that are rich in pigment.  They should generally avoid dusty colors or soft pastels as it will make them look washed out. ",
+        "description": "Deep Autumn excels in bold, warm colors that are rich in pigment. They should generally avoid dusty colors or soft pastels, as these can make them look washed out. Their palette focuses on depth, transitioning from pumpkin oranges to brick reds and warm redwood colors, with slightly more pigmentation than True Autumn.",
         "colors": [
             "#D4A0BA",
             "#C0789A",
-            "#A64E7Ap",
+            "#A64E7A",
             "#804160",
             "#A09255",
             "#7F723C",
@@ -279,7 +279,7 @@ SEASONAL_COLORS = {
         ],
     },
     Seasons.DEEP_WINTER: {
-        "description": "Deep winters have a rich and high-contrast feel.  Their skin tones are not purely cool and could even be considered more neutral. Olive complexions are also included in this.  They have dark eyes and dark hair.  They look best in high saturation colors and rich primary colors or pure pigments. They should avoid earthy tones, warm nudes, or warm-toned browns, oranges, and yellows.",
+        "description": "Deep Winter looks best in high saturation colors, rich primary colors, and pure pigments. They should avoid earthy tones, warm nudes, or warm-toned browns, oranges, and yellows, as these can clash with their coloring.",
         "colors": [
             "#913D4B",
             "#B690B7",
@@ -312,7 +312,7 @@ SEASONAL_COLORS = {
         ],
     },
     Seasons.COOL_WINTER: {
-        "description": "Cool Winters often have the following characteristics. But remember draping is the only way to be sure. So take the following color guidelines as a very generalized baseline. Because not every Cool Winter will look like Snow White. Cool winters have high contrast between their hair, skin tone, and eyes.  They look best in icy colors and cool colors.  Avoid warm-toned colors for the most flattering pairings.  Pastels all also generally avoided and in their place, you should go for icier colors instead (high saturation + white). Darker values can work well for the Cool winters, so long as they have a cool undertone.",
+        "description": "Cool Winter excels in icy colors and cool hues, with darker values working well as long as they have a cool undertone. This season should avoid warm-toned colors for the most flattering pairings. Instead of pastels, they should opt for icier colors (high saturation + white).",
         "colors": [
             "#B77EB5",
             "#92457F",
@@ -345,7 +345,7 @@ SEASONAL_COLORS = {
         ],
     },
     Seasons.BRIGHT_WINTER: {
-        "description": "Bright winters can have the following characteristics. But remember that we measure “brightness” by how the fabric drapes react. Can you undertone shine with these “bright” colors? It doesn’t automatically make you look like a super high contrast, brighter than everyone else in the room person. In real life, even the “bright” seasons look relatively normal. In Sci-Art we believe there are red-headed winters and that there are some red-headed Bright Winters with bright red hair and sparkling eyes.. However, other systems will put all redheads in warm seasons. This is the importance of knowing the system that your future analysts uses!",
+        "description": "Bright Winters looks best in clear, vivid colors that allow their natural coloring to shine. They should avoid muted or toned-down shades that can dull their vibrant features.",
         "colors": [
             "#9E3283",
             "#823281",
@@ -379,18 +379,7 @@ SEASONAL_COLORS = {
     },
 }
 
+
 SYSTEM_PROMPT = """
-You are an expert on seasonal color analysis, with knowledge based on established systems by Munsell, Itten, Dorr, Jackson, and Caygill. You understand hue, value, and chroma as key determinants of color seasons. You're familiar with the 12 seasonal color types.
-
-Provide concise, assertive responses in JSON format with keys: 
-"season": One of the 12 specific seasons. (Light Spring/Warm Spring/Bright Spring/Light Summer/Cool Summer/Soft Summer/Soft Autumn/Warm Autumn/Deep Autumn/Deep Winter/Cool Winter)
-/Bright Winter
-"characteristics": Key features of the person's coloring
-"colorsToSuggest": List of sorted dicts with "name" and "hex_code" of at least 12 colors that complement this season.
-"reasonToSuggest": Explanation of why these colors are recommended and how they complement the person's coloring
-"colorsToAvoid": List of sorted dicts with "name" and "hex_code" of at least 12 colors that may not flatter this season, avoid extreme colors that are not common clothes colors
-"reasonToAvoid": Explanation of why these colors are not recommended and how they might clash with the person's coloring
-"content": Concise explanation in correct json format in less than 200 words and correct JSON format of how you determined the season, beginning with "Based on the image provided, you have..." and including how you assessed warm vs. cool undertones, evaluation of contrast levels, assessment of chroma (clarity/brightness vs. softness/mutedness) and any other key factors in your determination.
-
-Your responses should be direct and confident, while acknowledging that in-person professional analysis is the most accurate method. Avoid hedging language unless absolutely necessary.
+You're a seasonal color analysis expert using the 12-season system. Be confident and direct in your analysis.
 """

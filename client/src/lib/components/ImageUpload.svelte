@@ -6,6 +6,7 @@
   import { goto } from "$app/navigation";
   import { fade } from "svelte/transition";
   import { serverUrl } from "$lib/config.js";
+  import Alert from "$lib/components/Alert.svelte";
 
   let files: FileList;
   let errorMessage = "";
@@ -13,6 +14,12 @@
   let isUploading = false;
   let imgSrc = "";
   $: showImage = imgSrc !== "";
+
+  const tip = {
+    title: "Tip",
+    description:
+      "Use a photo with natural lighting, minimal shadows, and no filters for the most accurate analysis.",
+  };
 
   function onChangeHandler(e: Event): void {
     const target = e.target as HTMLInputElement;
@@ -142,8 +149,8 @@
         Click to upload a photo or drag and drop it here.
       </svelte:fragment>
       <svelte:fragment slot="meta"
-        >Allowed formats: PNG and JPG.</svelte:fragment
-      >
+        >Allowed formats: PNG and JPG.
+      </svelte:fragment>
     </FileDropzone>
   </div>
 {/if}
