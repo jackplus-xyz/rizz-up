@@ -11,7 +11,7 @@ from flask import Blueprint, jsonify, request
 from PIL import Image
 
 from constants import SEASONAL_COLORS, SYSTEM_PROMPT, Seasons
-from image_utils import (
+from api.image_utils import (
     MultipleFacesError,
     NoFacesError,
     get_face,
