@@ -3,24 +3,25 @@
   import { fly } from "svelte/transition";
   import SwatchSlide from "$lib/components/SwatchSlide.svelte";
   import SvgSpinners3DotsMove from "~icons/svg-spinners/3-dots-move";
-  import { onMount } from "svelte";
-  import { goto } from "$app/navigation";
   import Alert from "$lib/components/Alert.svelte";
   import { quadInOut } from "svelte/easing";
   import { Button } from "$lib/components/ui/button";
-  import { Share, Save } from "lucide-svelte";
+  import { Home, Share, Save } from "lucide-svelte";
   import html2canvas from "html2canvas";
+  import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
+  import { error } from "@sveltejs/kit";
   import { seasonsData } from "$lib/data/seasonsData";
   import { Seasons } from "$lib/types/seasons";
-
   interface Analysis {
-    season: string;
+    season: Seasons;
     characteristics: string;
     colorsToSuggest: Color[];
     reasonToSuggest: string;
     colorsToAvoid: Color[];
     reasonToAvoid: string;
     content: string;
+    textColor: string;
   }
 
   interface Color {
@@ -44,11 +45,41 @@
   };
 
   let analysis: Analysis;
-  let selectedColor: string = "";
-  let seasonTextColor = "";
-  let isLoading: boolean = true;
   let croppedImage = "";
+  let selectedColor: string = "";
   let resultContainer: HTMLElement;
+  let isLoading = true;
+
+  async function getAnalysis() {
+    const croppedImageData =
+      typeof localStorage !== "undefined"
+        ? localStorage.getItem("croppedImage")
+        : null;
+
+    if (!croppedImageData) {
+      error(404, "No image data found");
+    }
+
+    const response = await fetch("/api/images/analysis", {
+      method: "POST",
+      body: JSON.stringify({ base64Image: croppedImageData }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to fetch analysis");
+    }
+
+    const data = await response.json();
+    const textColor = seasonsData[data.season as Seasons]?.textColor;
+    data.textColor = textColor;
+
+    localStorage.setItem("analysis", JSON.stringify(data));
+    return data;
+  }
 
   function handleColorSelected(event: CustomEvent<{ color: string }>) {
     selectedColor = event.detail.color;
@@ -106,7 +137,7 @@
         </div>
       </div>
       <div class="my-2 flex h-fit flex-col items-center justify-center md:my-4">
-        <h2 class="${seasonTextColor} text-center italic">
+        <h2 class="${analysis.textColor} text-center italic">
           ${analysis.season}
         </h2>
         <p class="text-center max-sm:hidden">
@@ -160,32 +191,38 @@
 
   onMount(async () => {
     try {
-      const croppedImageData = localStorage.getItem("croppedImage");
-      const analysisData = localStorage.getItem("analysis");
-
-      if (!croppedImageData || !analysisData) {
-        goto("/error");
-        return;
+      const localAnalysis = localStorage.getItem("analysis");
+      const localCroppedImage = localStorage.getItem("croppedImage");
+      if (localAnalysis && localCroppedImage) {
+        analysis = JSON.parse(localAnalysis);
+        croppedImage = "data:image/jpeg;base64," + localCroppedImage;
+      } else {
+        analysis = await getAnalysis();
+        croppedImage = "data:image/jpeg;base64," + localCroppedImage;
       }
-      croppedImage = croppedImageData;
-
-      analysis = JSON.parse(analysisData);
-      seasonTextColor = seasonsData[analysis.season as Seasons].textColor;
-    } catch (err) {
-      console.error("Error retrieving or parsing data:", err);
+    } catch (error) {
+      console.log(error);
+      goto("/error");
     } finally {
       isLoading = false;
     }
   });
+
+  function clearLocalStorage() {
+    const theme = localStorage.getItem("theme");
+    localStorage.clear();
+    if (theme) {
+      localStorage.setItem("theme", theme);
+    }
+    goto("/");
+  }
 </script>
 
 <div
   class="mx-auto flex min-h-screen w-full flex-col items-center justify-center px-8 py-4 font-serif md:w-4/5 md:py-8 lg:w-1/2"
   bind:this={resultContainer}
 >
-  {#if isLoading}
-    <SvgSpinners3DotsMove class="text-3xl text-muted-foreground" />
-  {:else}
+  {#if !isLoading}
     <h1
       class="w-full text-center"
       in:fly={{ y: 50, duration: 500, easing: quadInOut }}
@@ -217,7 +254,7 @@
           <Tabs.Trigger value="colorsToAvoid">Colors to Avoid</Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content value="analysis" class="mt-4 lg:mt-8">
-          <h2 class="{seasonTextColor} text-center italic">
+          <h2 class="{analysis.textColor} text-center italic">
             {analysis.season}
           </h2>
           <p class="text-center max-sm:hidden">
@@ -268,7 +305,14 @@
         <Save class="mr-2 h-4 w-4" />
         Save
       </Button>
+
+      <Button on:click={clearLocalStorage} variant="outline">
+        <Home class="mr-2 h-4 w-4" />
+        Go back to home
+      </Button>
     </div>
+  {:else}
+    <SvgSpinners3DotsMove class="text-3xl text-muted-foreground" />
+    <span class="text-muted-foreground">Generating color analysis</span>
   {/if}
-  <!-- TODO: Share Button, Save Button -->
 </div>

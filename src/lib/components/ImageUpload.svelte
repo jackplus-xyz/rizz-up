@@ -61,7 +61,7 @@
       const formData = new FormData();
       formData.append("image", files[0]);
 
-      const response = await fetch("api/image", {
+      const response = await fetch("api/images/crop", {
         method: "POST",
         body: formData,
       });
@@ -73,27 +73,10 @@
         return;
       }
 
-      const imageBlob = await response.blob();
-      const base64Image = await blobToBase64(imageBlob);
-      localStorage.setItem("croppedImage", base64Image);
-
-      const analysisResponse = await fetch("api/analysis", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ base64Image: base64Image.split(",")[1] }),
-      });
-
-      if (!analysisResponse.ok) {
-        const errorData = await analysisResponse.json();
-        console.error(errorData.error);
-        handleError(errorData.error);
-        return;
+      const data = await response.json();
+      if (data.croppedImage) {
+        localStorage.setItem("croppedImage", data.croppedImage);
       }
-
-      const analysis = await analysisResponse.json();
-      localStorage.setItem("analysis", JSON.stringify(analysis));
 
       goto(`/analysis`);
     } catch (error) {
