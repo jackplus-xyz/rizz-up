@@ -23,6 +23,7 @@ export const seasonsData: Record<Seasons, SeasonInfo> = {
       "#72C9DB",
       "#D1BE9E",
     ],
+    textColor: "text-[#4A7C59]",
   },
   [Seasons.WARM_SPRING]: {
     description:
@@ -45,6 +46,7 @@ export const seasonsData: Record<Seasons, SeasonInfo> = {
       "#4AA2D6",
       "#6D6660",
     ],
+    textColor: "text-[#8B6E4E]",
   },
   [Seasons.BRIGHT_SPRING]: {
     description:
@@ -79,6 +81,7 @@ export const seasonsData: Record<Seasons, SeasonInfo> = {
       "#E75C48",
       "#D8283D",
     ],
+    textColor: "text-[#E37D5E]",
   },
   [Seasons.LIGHT_SUMMER]: {
     description:
@@ -101,6 +104,7 @@ export const seasonsData: Record<Seasons, SeasonInfo> = {
       "#90ADD7",
       "#CCD0D5",
     ],
+    textColor: "text-[#7C90A0]",
   },
   [Seasons.COOL_SUMMER]: {
     description:
@@ -135,6 +139,7 @@ export const seasonsData: Record<Seasons, SeasonInfo> = {
       "#7B989A",
       "#43808F",
     ],
+    textColor: "text-[#5E7C8B]",
   },
   [Seasons.SOFT_SUMMER]: {
     description:
@@ -169,6 +174,7 @@ export const seasonsData: Record<Seasons, SeasonInfo> = {
       "#BDC9CB",
       "#7097A2",
     ],
+    textColor: "text-[#8B8BAA]",
   },
   [Seasons.SOFT_AUTUMN]: {
     description:
@@ -203,6 +209,7 @@ export const seasonsData: Record<Seasons, SeasonInfo> = {
       "#F1D48E",
       "#CBB178",
     ],
+    textColor: "text-[#8B7E66]",
   },
   [Seasons.WARM_AUTUMN]: {
     description:
@@ -237,6 +244,7 @@ export const seasonsData: Record<Seasons, SeasonInfo> = {
       "#928167",
       "#6F5D4F",
     ],
+    textColor: "text-[#A0522D]",
   },
   [Seasons.DEEP_AUTUMN]: {
     description:
@@ -244,7 +252,7 @@ export const seasonsData: Record<Seasons, SeasonInfo> = {
     colors: [
       "#D4A0BA",
       "#C0789A",
-      "#A64E7Ap",
+      "#A64E7A",
       "#804160",
       "#A09255",
       "#7F723C",
@@ -271,6 +279,7 @@ export const seasonsData: Record<Seasons, SeasonInfo> = {
       "#B99555",
       "#BE7E57",
     ],
+    textColor: "text-[#8B4726]",
   },
   [Seasons.DEEP_WINTER]: {
     description:
@@ -305,6 +314,7 @@ export const seasonsData: Record<Seasons, SeasonInfo> = {
       "#EA5E73",
       "#CD4D7D",
     ],
+    textColor: "text-[#4A4E69]",
   },
   [Seasons.COOL_WINTER]: {
     description:
@@ -339,6 +349,7 @@ export const seasonsData: Record<Seasons, SeasonInfo> = {
       "#C5DDC1",
       "#BBB",
     ],
+    textColor: "text-[#4A6670]",
   },
   [Seasons.BRIGHT_WINTER]: {
     description:
@@ -373,5 +384,6 @@ export const seasonsData: Record<Seasons, SeasonInfo> = {
       "#A7C545",
       "#83AB58",
     ],
+    textColor: "text-[#5E548E]",
   },
 };
