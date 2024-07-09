@@ -5,8 +5,6 @@
   import { Button } from "$lib/components/ui/button";
   import { goto } from "$app/navigation";
   import { fade } from "svelte/transition";
-  import { serverUrl } from "$lib/config.js";
-  import Alert from "$lib/components/Alert.svelte";
 
   let files: FileList;
   let errorMessage = "";
@@ -63,7 +61,7 @@
       const formData = new FormData();
       formData.append("image", files[0]);
 
-      const response = await fetch(`${serverUrl}/image`, {
+      const response = await fetch("api/image", {
         method: "POST",
         body: formData,
       });
@@ -75,21 +73,46 @@
         return;
       }
 
-      const data = await response.json();
-      if (data && data.cropped_image && data.analysis) {
-        localStorage.setItem("croppedImage", data.cropped_image);
-        localStorage.setItem("analysis", JSON.stringify(data.analysis));
-        goto(`/analysis`);
-      } else {
-        throw new Error("Received incomplete data from server");
+      const imageBlob = await response.blob();
+      const base64Image = await blobToBase64(imageBlob);
+      localStorage.setItem("croppedImage", base64Image);
+
+      const analysisResponse = await fetch("api/analysis", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ base64Image: base64Image.split(",")[1] }),
+      });
+
+      if (!analysisResponse.ok) {
+        const errorData = await analysisResponse.json();
+        console.error(errorData.error);
+        handleError(errorData.error);
+        return;
       }
+
+      const analysis = await analysisResponse.json();
+      localStorage.setItem("analysis", JSON.stringify(analysis));
+
+      goto(`/analysis`);
     } catch (error) {
+      console.error("Error processing image:", error);
       handleError(
         "Failed to process the image. Please try another photo or try again later.",
       );
     } finally {
       isUploading = false;
     }
+  }
+
+  function blobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
   }
 
   function handleError(message: string): void {
