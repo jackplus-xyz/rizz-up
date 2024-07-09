@@ -43,7 +43,7 @@ async function getSeason(cropped_img_base64: string): Promise<string> {
 }
 
 async function getAnalysis(cropped_img_base64: string, season: string) {
-  const seasonEnum = season.toUpperCase().replace(" ", "_") as Seasons;
+  const seasonEnum = season as Seasons;
   const seasonInfo = seasonsData[seasonEnum];
 
   if (!seasonInfo) {
@@ -124,7 +124,6 @@ async function getAnalysis(cropped_img_base64: string, season: string) {
   });
 
   const message = followUpResponse.content[0].text;
-  console.log(message);
 
   try {
     const jsonStart = message.indexOf("{");

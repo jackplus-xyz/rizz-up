@@ -10,6 +10,8 @@
   import { Button } from "$lib/components/ui/button";
   import { Share, Save } from "lucide-svelte";
   import html2canvas from "html2canvas";
+  import { seasonsData } from "$lib/data/seasonsData";
+  import { Seasons } from "$lib/types/seasons";
 
   interface Analysis {
     season: string;
@@ -25,21 +27,6 @@
     name: string;
     hexCode: string;
   }
-
-  const seasonTextColors = {
-    "Light Spring": "text-[#4A7C59]",
-    "Warm Spring": "text-[#8B6E4E]",
-    "Bright Spring": "text-[#E37D5E]",
-    "Light Summer": "text-[#7C90A0]",
-    "Cool Summer": "text-[#5E7C8B]",
-    "Soft Summer": "text-[#8B8BAA]",
-    "Soft Autumn": "text-[#8B7E66]",
-    "Warm Autumn": "text-[#A0522D]",
-    "Deep Autumn": "text-[#8B4726]",
-    "Deep Winter": "text-[#4A4E69]",
-    "Cool Winter": "text-[#4A6670]",
-    "Bright Winter": "text-[#5E548E]",
-  };
 
   const disclaimer = {
     title: "Disclaimer",
@@ -176,18 +163,14 @@
       const croppedImageData = localStorage.getItem("croppedImage");
       const analysisData = localStorage.getItem("analysis");
 
-      if (croppedImageData) {
-        croppedImage = croppedImageData;
-      } else {
+      if (!croppedImageData || !analysisData) {
         goto("/error");
+        return;
       }
+      croppedImage = croppedImageData;
 
-      if (analysisData) {
-        analysis = JSON.parse(analysisData);
-        seasonTextColor = seasonTextColors[analysis.season];
-      } else {
-        goto("/error");
-      }
+      analysis = JSON.parse(analysisData);
+      seasonTextColor = seasonsData[analysis.season as Seasons].textColor;
     } catch (err) {
       console.error("Error retrieving or parsing data:", err);
     } finally {
