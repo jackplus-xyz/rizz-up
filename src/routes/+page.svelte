@@ -3,6 +3,12 @@
   import GuidanceDown2ShortArrow from "~icons/guidance/down-2-short-arrow";
   import Hero from "$lib/components/Hero.svelte";
   import ImageUpload from "$lib/components/ImageUpload.svelte";
+
+  const tip = {
+    title: "Tip",
+    description:
+      "Use a photo with natural lighting, minimal shadows, and no filters for the most accurate analysis.",
+  };
 </script>
 
 <svelte:head>
@@ -16,12 +22,21 @@
 <div class="flex w-full flex-col items-center justify-start md:min-h-screen">
   <Hero />
   <div
-    class="flex flex-col items-center justify-center px-8 text-lg md:flex-row"
+    class="mb-8 flex flex-col items-center justify-center px-8 text-lg md:mb-16 md:flex-row"
   >
     <div
       class="group flex flex-col items-center justify-center text-lg font-light md:flex-row md:text-2xl"
     >
-      Upload a photo to start the analysis
+      <div
+        class="flex max-w-xs flex-col items-start justify-center md:max-w-sm"
+      >
+        <div class="whitespace-nowrap">
+          Upload a photo to start the analysis
+        </div>
+        <div class="mt-4 text-sm text-muted-foreground">
+          {tip.title}: {tip.description}
+        </div>
+      </div>
       <span
         class="mx-2 hidden transition-all group-hover:translate-x-2 md:mx-4 md:flex"
         id="upload-arrow"

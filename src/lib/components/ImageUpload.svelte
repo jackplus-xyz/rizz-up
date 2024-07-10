@@ -5,6 +5,7 @@
   import { Button } from "$lib/components/ui/button";
   import { goto } from "$app/navigation";
   import { fade } from "svelte/transition";
+  import { onDestroy } from "svelte";
 
   let files: FileList;
   let errorMessage = "";
@@ -13,11 +14,30 @@
   let imgSrc = "";
   $: showImage = imgSrc !== "";
 
-  const tip = {
-    title: "Tip",
-    description:
-      "Use a photo with natural lighting, minimal shadows, and no filters for the most accurate analysis.",
-  };
+  let loadingMessages = [
+    "Uploading image",
+    "Coaxing pixels through tubes",
+    "Negotiating with firewalls",
+    "First-class ticket to servers",
+    "Waking face recognition hamsters",
+    "Face or potato? Calibrating...",
+    "Convincing cats they're faces",
+    "Almost there",
+  ];
+  let currentMessageIndex = 0;
+  let messageInterval: ReturnType<typeof setInterval> | undefined;
+  let isVisible = true;
+
+  $: currentMessage = loadingMessages[currentMessageIndex];
+  let transitionDuration = 10000;
+
+  function updateMessage() {
+    isVisible = false;
+    setTimeout(() => {
+      currentMessageIndex = (currentMessageIndex + 1) % loadingMessages.length;
+      isVisible = true;
+    }, transitionDuration / 2);
+  }
 
   function onChangeHandler(e: Event): void {
     const target = e.target as HTMLInputElement;
@@ -57,6 +77,7 @@
     try {
       isError = false;
       isUploading = true;
+      messageInterval = setInterval(updateMessage, transitionDuration);
 
       const formData = new FormData();
       formData.append("image", files[0]);
@@ -78,25 +99,35 @@
         localStorage.setItem("croppedImage", data.croppedImage);
       }
 
+      const localAnalysis = localStorage.getItem("analysis");
+      if (localAnalysis) {
+        localStorage.removeItem("analysis");
+      }
+
       goto(`/analysis`);
     } catch (error) {
       console.error("Error processing image:", error);
       handleError(
         "Failed to process the image. Please try another photo or try again later.",
       );
+
+      if (messageInterval) {
+        clearInterval(messageInterval);
+      }
     } finally {
       isUploading = false;
+
+      if (messageInterval) {
+        clearInterval(messageInterval);
+      }
     }
   }
 
-  function blobToBase64(blob: Blob): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-  }
+  onDestroy(() => {
+    if (messageInterval) {
+      clearInterval(messageInterval);
+    }
+  });
 
   function handleError(message: string): void {
     isError = true;
@@ -131,8 +162,15 @@
       >
         {#if isError}
           {errorMessage}
-        {:else}
-          <SvgSpinners3DotsMove />
+        {:else if currentMessage}
+          <div class="flex flex-col items-center gap-1">
+            <SvgSpinners3DotsMove />
+            {#if isVisible}
+              <span transition:fade={{ duration: transitionDuration }}>
+                {currentMessage}
+              </span>
+            {/if}
+          </div>
         {/if}
       </div>
     {/if}
@@ -141,7 +179,7 @@
   <div
     role="none"
     id="upload-image"
-    class=" flex aspect-square max-w-md flex-col items-center justify-center rounded-xl border bg-primary-foreground text-base text-muted-foreground transition duration-200 hover:bg-background"
+    class="flex aspect-square max-w-md flex-col items-center justify-center rounded-xl border bg-primary-foreground text-base text-muted-foreground transition duration-200 hover:bg-background"
   >
     <MdiLightCloudUpload class="text-4xl" />
     <FileDropzone
