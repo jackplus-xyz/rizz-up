@@ -5,10 +5,15 @@ export const POST: RequestHandler = async ({ request }) => {
   try {
     const formData = await request.formData();
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 60000);
+
     const response = await fetch(`${GOOGLE_CLOUD_RUN_URL}/api/images/crop`, {
       method: "POST",
       body: formData,
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       console.error(response);
@@ -23,7 +28,6 @@ export const POST: RequestHandler = async ({ request }) => {
       return new Response(responseData.error, { status: 400 });
     }
 
-    // Return the cropped image data
     return new Response(
       JSON.stringify({ croppedImage: responseData.cropped_image }),
       {
@@ -35,6 +39,12 @@ export const POST: RequestHandler = async ({ request }) => {
     );
   } catch (error) {
     console.error("Error processing image:", error);
-    return new Response("Internal Server Error", { status: 500 });
+    if (error instanceof Error) {
+      if (error.name === "AbortError") {
+        return new Response("Request timed out", { status: 408 });
+      }
+      return new Response(`Error: ${error.message}`, { status: 500 });
+    }
+    return new Response("An unknown error occurred", { status: 500 });
   }
 };
