@@ -1,6 +1,6 @@
 {
   "functions": {
-    "src/routes/api/images/crop/*.ts": {
+    "src/routes/**/*.ts": {
       "maxDuration": 60
     }
   }
