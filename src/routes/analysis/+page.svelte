@@ -252,6 +252,11 @@
   }
 </script>
 
+<svelte:head>
+  <title>Rizz Up | Analysis</title>
+  <meta name="description" content="Your personal color analysis" />
+</svelte:head>
+
 <div
   class="mx-auto flex min-h-screen w-full flex-col items-center justify-center px-8 py-4 font-serif md:w-4/5 md:py-8 lg:w-1/2"
   bind:this={resultContainer}
