@@ -27,6 +27,7 @@
 </p>
 
 <p align="center">
+  <a href="#introduction">Introduction</a> •
   <a href="#key-features">Key Features</a> •
   <a href="#built-with">Built With</a> •
   <a href="#roadmap">Roadmap</a> •
@@ -35,7 +36,21 @@
   <a href="#contact">Contact</a>
 </p>
 
+## Introduction
+
 ![screenshot](https://github.com/jackplus-xyz/rizz-up/assets/103010556/80577053-4a54-49d7-96b3-60d5c10c9a5c)
+
+Rizz-up is a web application designed to provide personalized color analysis based on individual skin tones. It uses Claude for skin tone analysis and offers users tailored color palette recommendations to enhance their personal style choices.
+
+The application is grounded in the principles of seasonal color analysis, a system that categorizes individuals into color seasons based on their skin tone, natural eye color, and hair color. Rizz-up considers three key dimensions in its analysis:
+
+1. Temperature/Undertone: Determining whether an individual's coloring is warm (yellow-based) or cool (blue-based)
+2. Value/Contrast: Assessing whether the overall coloring is dark/deep or light
+3. Saturation: Evaluating whether colors appear bright/clear or muted/soft
+
+By analyzing these dimensions, Rizz-up can recommend color palettes that harmonize with an individual's natural coloring, potentially falling into one of the 12 seasonal categories: Dark Winter, True Winter, Bright Winter, Bright Spring, True Spring, Light Spring, Light Summer, True Summer, Soft Summer, Soft Autumn, True Autumn, and Dark Autumn.
+
+The application aims to assist fashion enthusiasts, makeup artists, and individuals looking to refine their personal style. By providing scientifically-backed color recommendations and advice on what to avoid , Rizz-up helps users make informed decisions about their wardrobe and appearance, potentially leading to a significant style enhancement.
 
 ## Key Features
 
