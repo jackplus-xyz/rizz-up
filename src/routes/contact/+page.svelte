@@ -10,7 +10,7 @@
 </svelte:head>
 
 <div
-  class="mx-auto flex flex-col items-start justify-center px-8 py-4 font-serif md:w-3/4 md:px-16 md:py-8 lg:w-1/2"
+  class="mx-auto flex min-h-screen flex-col items-start justify-center px-8 py-4 font-serif md:w-3/4 md:px-16 md:py-8 lg:w-1/2"
 >
   <h1 in:fly={{ y: 50, duration: 500, easing: quadInOut }}>Contact</h1>
 
