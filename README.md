@@ -1,3 +1,7 @@
+## Demo
+
+https://github.com/jackplus-xyz/rizz-up/assets/103010556/872e2902-452b-40e5-930e-c5e32bc6b705
+
 # create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
