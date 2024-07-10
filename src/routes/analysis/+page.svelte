@@ -1,6 +1,6 @@
 <script lang="ts">
   import * as Tabs from "$lib/components/ui/tabs";
-  import { fly } from "svelte/transition";
+  import { fade, fly } from "svelte/transition";
   import SwatchSlide from "$lib/components/SwatchSlide.svelte";
   import SvgSpinners3DotsMove from "~icons/svg-spinners/3-dots-move";
   import Alert from "$lib/components/Alert.svelte";
@@ -8,7 +8,7 @@
   import { Button } from "$lib/components/ui/button";
   import { Home, Share, Save } from "lucide-svelte";
   import html2canvas from "html2canvas";
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import { goto } from "$app/navigation";
   import { error } from "@sveltejs/kit";
   import { seasonsData } from "$lib/data/seasonsData";
@@ -49,6 +49,32 @@
   let selectedColor: string = "";
   let resultContainer: HTMLElement;
   let isLoading = true;
+
+  let loadingMessages = [
+    "Generating color analysis",
+    "Adjusting white balance for perfect neutrals",
+    "Compensating for sneaky ambient lighting",
+    "Decoding your skin's secret hues",
+    "Solving the RGB rubik's cube",
+    "Debating warm vs. cool tones",
+    "Painting your perfect palette",
+    "Banishing unflattering shades",
+    "Preparing the color forecast",
+  ];
+  let currentMessageIndex = 0;
+  let messageInterval: ReturnType<typeof setInterval> | undefined;
+  let isVisible = true;
+
+  $: currentMessage = loadingMessages[currentMessageIndex];
+  let transitionDuration = 5000;
+
+  function updateMessage() {
+    isVisible = false;
+    setTimeout(() => {
+      currentMessageIndex = (currentMessageIndex + 1) % loadingMessages.length;
+      isVisible = true;
+    }, transitionDuration / 2);
+  }
 
   async function getAnalysis() {
     const croppedImageData =
@@ -191,6 +217,8 @@
 
   onMount(async () => {
     try {
+      messageInterval = setInterval(updateMessage, transitionDuration);
+
       const localAnalysis = localStorage.getItem("analysis");
       const localCroppedImage = localStorage.getItem("croppedImage");
       if (localAnalysis && localCroppedImage) {
@@ -205,6 +233,12 @@
       goto("/error");
     } finally {
       isLoading = false;
+    }
+  });
+
+  onDestroy(() => {
+    if (messageInterval) {
+      clearInterval(messageInterval);
     }
   });
 
@@ -313,6 +347,13 @@
     </div>
   {:else}
     <SvgSpinners3DotsMove class="text-3xl text-muted-foreground" />
-    <span class="text-muted-foreground">Generating color analysis</span>
+    {#if isVisible}
+      <span
+        class="font-sans text-muted-foreground"
+        transition:fade={{ duration: transitionDuration }}
+      >
+        {currentMessage}
+      </span>
+    {/if}
   {/if}
 </div>
