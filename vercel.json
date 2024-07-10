@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "src/routes/api/images/crop/*.ts": {
+      "maxDuration": 60
+    }
+  }
+}
