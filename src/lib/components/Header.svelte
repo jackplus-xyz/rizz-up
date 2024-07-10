@@ -24,13 +24,38 @@
       $page.url.pathname === path || $page.url.pathname.startsWith(path),
     );
   }
+
+  // Metadata
+  const title = "Rizz Up";
+  const description =
+    "Discover the perfect colors that complement your skin tone and style.";
+  const image = `${$page.url.origin}/logo.png`;
+  const url = "https://rizz-up.jackplus.xyz";
+  const siteName = "Rizz Up";
 </script>
 
 <svelte:head>
+  <title>{title}</title>
+  <meta name="description" content={description} />
+
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
   <link rel="manifest" href="/site.webmanifest" />
+
+  <!-- OpenGraph tags -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={image} />
+  <meta property="og:url" content={url} />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content={siteName} />
+
+  <!-- Twitter Card tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={image} />
 </svelte:head>
 
 <header class="flex items-center justify-between px-6 py-4 md:px-8">
