@@ -64,7 +64,7 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        serif: ["Alegreya", "serif"],
+        serif: ["Times", "serif"],
         sans: ["Alegreya Sans", "sans-serif"],
       },
     },
