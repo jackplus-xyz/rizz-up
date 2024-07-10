@@ -21,7 +21,7 @@ async function getSeason(cropped_img_base64: string): Promise<string> {
             type: "image",
             source: {
               type: "base64",
-              media_type: "image/png",
+              media_type: "image/jpeg",
               data: cropped_img_base64,
             },
           },
@@ -75,7 +75,7 @@ async function getAnalysis(cropped_img_base64: string, season: string) {
           type: "image",
           source: {
             type: "base64",
-            media_type: "image/png",
+            media_type: "image/jpeg",
             data: cropped_img_base64,
           },
         },
@@ -145,8 +145,20 @@ async function getAnalysis(cropped_img_base64: string, season: string) {
 export const POST: RequestHandler = async ({ request }) => {
   try {
     const body = await request.json();
+    const base64Image = body.base64Image;
 
-    const { base64Image } = body;
+    if (!base64Image) {
+      return new Response(
+        JSON.stringify({ error: "The image is not valid. Please try again." }),
+        {
+          status: 400,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+    }
+
     if (!base64Image) {
       return new Response(
         JSON.stringify({ error: "The image is not valid. Please try again." }),
