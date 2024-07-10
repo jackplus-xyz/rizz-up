@@ -6,7 +6,7 @@
   import Alert from "$lib/components/Alert.svelte";
   import { quadInOut } from "svelte/easing";
   import { Button } from "$lib/components/ui/button";
-  import { Home, Share, Save } from "lucide-svelte";
+  import { Home, Share, Save, RotateCw } from "lucide-svelte";
   import html2canvas from "html2canvas";
   import { onDestroy, onMount } from "svelte";
   import { goto } from "$app/navigation";
@@ -111,27 +111,42 @@
     selectedColor = event.detail.color;
   }
 
-  function handleShare() {
+  async function handleShare() {
     if (navigator.share) {
-      navigator
-        .share({
+      try {
+        await navigator.share({
           title: "My Personal Color Analysis",
           text: `My color season is ${analysis.season}. Check out my personal color analysis!`,
           url: window.location.href,
-        })
-        .then(() => {
-          console.log("Successfully shared");
-        })
-        .catch((error) => {
-          console.error("Error sharing:", error);
         });
+        console.log("Successfully shared");
+      } catch (error) {
+        console.error("Error sharing:", error);
+        fallbackShare();
+      }
     } else {
-      alert(
-        "Web Share API is not supported in your browser. You can manually copy the URL to share.",
-      );
+      fallbackShare();
     }
   }
 
+  function fallbackShare() {
+    const shareUrl = window.location.href;
+    const textArea = document.createElement("textarea");
+    textArea.value = shareUrl;
+    document.body.appendChild(textArea);
+    textArea.select();
+    try {
+      document.execCommand("copy");
+      alert("URL copied to clipboard. You can now paste it to share.");
+    } catch (err) {
+      console.error("Failed to copy URL:", err);
+      alert(
+        "Failed to copy URL. You can manually copy the URL from the address bar to share.",
+      );
+    } finally {
+      document.body.removeChild(textArea);
+    }
+  }
   async function handleSave() {
     try {
       // Create a new div to hold our save layout
@@ -336,18 +351,18 @@
       </Tabs.Root>
     </div>
     <div class="mt-4 flex space-x-4 font-sans">
-      <Button on:click={handleShare} variant="outline">
-        <Share class="mr-2 h-4 w-4" />
-        Share
-      </Button>
+      <!-- <Button on:click={handleShare} variant="outline"> -->
+      <!--   <Share class="mr-2 h-4 w-4" /> -->
+      <!--   Share -->
+      <!-- </Button> -->
       <Button on:click={handleSave} variant="outline">
         <Save class="mr-2 h-4 w-4" />
         Save
       </Button>
 
       <Button on:click={clearLocalStorage} variant="outline">
-        <Home class="mr-2 h-4 w-4" />
-        Go back to home
+        <RotateCw class="mr-2 h-4 w-4" />
+        Try Again
       </Button>
     </div>
   {:else}
