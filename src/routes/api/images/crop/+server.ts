@@ -1,6 +1,8 @@
 import { GOOGLE_CLOUD_RUN_URL } from "$env/static/private";
 import type { RequestHandler } from "@sveltejs/kit";
 
+export const maxDuration = 60; // This function can run for a maximum of 60 seconds
+
 export const POST: RequestHandler = async ({ request }) => {
   try {
     const formData = await request.formData();
@@ -11,6 +13,7 @@ export const POST: RequestHandler = async ({ request }) => {
     const response = await fetch(`${GOOGLE_CLOUD_RUN_URL}/api/images/crop`, {
       method: "POST",
       body: formData,
+      signal: controller.signal,
     });
 
     clearTimeout(timeoutId);
